@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Tahoma:wght@400;700&display=swap');
+
+body {
+    font-family: 'Tahoma', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #d0f0ff, #a0d8ef);
+    color: #333;
+}
+
+header {
+    background: linear-gradient(135deg, #72c6f8, #4a90e2);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+h3 {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.header-buttons button {
+    background: linear-gradient(135deg, #5dbbf3, #318acb);
+    border: none;
+    padding: 10px 20px;
+    margin-left: 10px;
+    border-radius: 15px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: inset 2px 2px 4px rgba(255, 255, 255, 0.5), 2px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.container {
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    background: linear-gradient(135deg, #98ddf7, #7db5e4);
+    padding: 20px;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 15px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    display: block;
+    border-radius: 10px;
+}
+
+.sidebar ul li a:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+main {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.project-card {
+    background: linear-gradient(135deg, #ffffff, #d0f0ff);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: inset 2px 2px 4px rgba(255, 255, 255, 0.7), 2px 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.project-banner {
+    width: 100%;
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.project-date {
+    position: absolute;
+    top: 120px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.9em;
+}
+
+.project-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 15px;
+    position: absolute;
+    top: 120px;
+    left: 5px;
+    background-color: white;
+    padding: 3px;
+    border: 3px solid white;
+}
+
+.project-info {
+    text-align: left;
+    margin-top: 15px;
+}
+
+.project-category {
+    display: inline-block;
+    background: #4a90e2;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-right: 10px;
+    margin-top: 10px;
+    font-size: 0.9em;
+}
+
+.project-card h3 {
+    font-size: 1.4em;
+    margin-top: 70px;
+}
+
+.project-card a {
+    display: inline-block;
+    background: #318acb;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 15px;
+    font-weight: bold;
+    box-shadow: inset 2px 2px 4px rgba(255, 255, 255, 0.5), 2px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.project-card a:hover {
+    background: #5dbbf3;
+}
+
+.collaboration-note {
+    font-size: 0.9em;
+    color: #555;
+    margin-top: 10px;
+}
