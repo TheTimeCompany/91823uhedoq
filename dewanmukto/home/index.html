@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dewan Mukto's Website</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-97CY2GDQK9"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-97CY2GDQK9');
+    </script>
+</head>
+<body>
+    <!-- Intro video overlay -->
+<div class="intro-video-overlay" id="introVideoOverlay">
+    <video autoplay muted id="introVideo">
+        <source src="intro.mp4" type="video/mp4">
+    </video>
+</div>
+<!-- Background music -->
+<audio id="playlist-audio" autoplay style="display: none;"></audio>
+<script>
+const playlist=['/asset/audio/Track01.mp3','/asset/audio/Track02.mp3','/asset/audio/Track03.mp3','/asset/audio/Track04.mp3','/asset/audio/Track05.mp3','/asset/audio/Track06.mp3','/asset/audio/Track07.mp3'],audioElement=document.getElementById('playlist-audio');let currentTrack=0;function playNextTrack(){currentTrack=(currentTrack+1)%playlist.length,audioElement.src=playlist[currentTrack],audioElement.play()}audioElement.src=playlist[currentTrack],audioElement.addEventListener('ended',playNextTrack),window.onload=function(){audioElement.play().catch(function(error){console.log("Autoplay failed due to browser restrictions. Waiting for user interaction."),window.addEventListener('click',function(){audioElement.muted=!1,audioElement.play().catch(function(error){console.log("Error playing audio after interaction: ",error)})},{once:!0})})};
+</script>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo-container">
+                <img src="logo.png" alt="Logo" class="logo">
+                <span class="wordmark">DEWAN MUKTO</span>
+            </div>
+            <div class="categories-nav" id="categoriesNav">
+                <button class="nav-arrow up-arrow" onclick="scrollCategories(-1)">◀</button>
+                <div class="categories-container">
+                    <div class="categories" id="categoriesList">
+                        <button class="category-btn" onclick="showCategory('books')">Books</button>
+                        <button class="category-btn" onclick="showCategory('designs')">Designs</button>
+                        <button class="category-btn" onclick="showCategory('articles')">Articles</button>
+                        <!-- Additional categories can be added here -->
+                        <button class="category-btn" onclick="showCategory('apps')">Apps</button>
+                    </div>
+                </div>
+                <button class="nav-arrow down-arrow" onclick="scrollCategories(1)">▶</button>
+            </div>
+        </div>
+        <div class="content" id="content">
+            <!-- Content will be loaded here dynamically -->
+        </div>
+    </div>
+
+    <div id="popup" class="popup">
+        <button id="closePopup" class="close-popup" onclick="closePopup()">✖</button>
+        <iframe id="popupIframe" src="" frameborder="0"></iframe>
+    </div>
+
+    <div class="about-panel" onclick="toggleAboutPanel()">
+        Contact Me
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
