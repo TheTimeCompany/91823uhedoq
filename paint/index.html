@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MuxPaint</title>
+    <meta name="description" content="A free and fast instant whiteboard">
+    <meta name="keywords" content="mux paint, instant whiteboard, whiteboard, free whiteboard, simple whiteboard, muxpaint, mux paint whiteboard">
+    <meta name="author" content="MuxAI">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="MuxPaint | Whiteboard">
+    <meta property="og:description" content="A free and fast instant whiteboard">
+    <meta property="og:image" content="ogimage.png">
+    <meta property="og:url" content="https://paint.muxday.com">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@dewan_mukto">
+    <meta name="twitter:title" content="MuxPaint | Whiteboard">
+    <meta name="twitter:description" content="A free and fast instant whiteboard">
+    <meta name="twitter:image" content="ogimage.png"><!-- MuxPaint by MuxAI -->
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="favicon.png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Floating Toolbar -->
+        <div class="tools">
+          <button id="clearCanvas" title="Clear Canvas"><i class="fas fa-trash"></i></button>
+            <button id="color-picker-button" title="Pick Brush Color">
+                <i class="fas fa-palette"></i>
+            </button>
+          <button id="eraserTool" title="Eraser Tool"><i class="fas fa-eraser"></i></button>
+          <button id="undoButton" title="Undo"><i class="fas fa-undo"></i></button>
+            <div id="brush-size-container" class="brush-size-control" title="Adjust Brush Size">
+                <i class="fas fa-pen"></i>
+            </div>
+            <div id="brush-slider-container">
+                <input type="range" id="brush-slider" min="1" max="50" step="1" value="5" oninput="changeBrushSize(this.value)">
+                <span id="brush-size-preview">5px</span>
+            </div>
+        </div>
+      
+        <div class="canvas-container">
+            <canvas id="paintCanvas"><!-- Painting Canvas --></canvas>
+        </div>
+
+        <div class="footer">
+            <p>&copy; MuxPaint by MuxAI, 2025</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
