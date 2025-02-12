@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Profile</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="background"></div>
+
+    <div class="container">
+        <!-- Left Column -->
+        <div class="column">
+            <div class="profile-pic">
+                <img src="https://barnali-arts.carrd.co/assets/images/image01.jpg?v=3148f829" alt="Profile">
+            </div>
+            <div class="bio-panel glass">
+                <h2>Hi, I'm Barnali</h2>
+                <p>Thank you for dropping by!!
+I'm an anime artist. I make illustrations, anime character designs, character sheets. I have been drawing for more than 5 years. I'm doing my best to improve myself little by little.</p>
+            </div>
+            <div class="social-panel glass">
+                <div class="chain-frame"></div>
+                <div class="chain-frame"></div>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/profile.php?id=61564461615584"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/bar_na_li/"><i class="fab fa-instagram"></i></a>
+                    <a href="https://x.com/Barnali_Art"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Middle Column -->
+        <div class="column middle">
+            <div class="middle-icons info-circles">
+                <div class="circle glass" id="payment-info">
+                    <i class="middle-icons fab fa-paypal"></i>
+                    <p>Payment info</p>
+                </div>
+                <div class="circle glass">
+                    <i class="middle-icons fas fa-clock"></i>
+                    <p>7-10 days</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="column">
+            <div class="accordion">
+                <div class="accordion-item">
+                    <button class="accordion-btn">Pricing</button>
+                    <div class="accordion-content glass">
+                        <div class="price-frame">
+                            <p>Bust up: $25</p>
+                        </div>
+                        <div class="price-frame">
+                            <p>Half body: $40</p>
+                        </div>
+                        <div class="price-frame">
+                            <p>Full body: $80</p>
+                        </div>
+                        <p class="hidden-text">Simple backgrounds are added within the prices.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-btn">Portfolio</button>
+                    <div class="accordion-content glass">
+                        <div class="carousel">
+                            <button class="carousel-btn prev">&lt;</button>
+                            <img src="https://barnali-arts.carrd.co/assets/images/image06.jpg?v=3148f829" alt="Art 1">
+                            <button class="carousel-btn next">&gt;</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-btn">Terms & Conditions</button>
+                    <div class="accordion-content glass">
+                        <h3>Disclaimer</h3>
+                        <p>By placing an order, you agree to these terms and conditions. Please read them carefully:</p>
+                        <ul>
+                            <li>Do not use my art for AI purposes or upload it to AI sites.</li>
+                            <li>NFT usage is strictly forbidden.</li>
+                            <li>You may use the art for personal, non-profit purposes unless otherwise stated, with image credits provided to me.</li>
+                        </ul>
+                        <h4>Client</h4>
+                        <ul>
+                            <li>You may display my work on external sites with visible credit to me.</li>
+                            <li>You may not claim my work as your own.</li>
+                            <li>You may print or create physical reproductions for personal use only (i.e. not for sale).</li>
+                            <li>You may not use the artwork for redistribution, commercial, or external projects unless otherwise discussed.</li>
+                            <li>If you wish to order a commission for commercial use, the total price and royalties will be agreed upon upfront.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="payment-modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Payment method - Xoom</h3>
+            <p>( It is a PayPal service, so you don't need to create any new account, you can just log in to your PayPal account )</p>
+            <p>I take half of the payment up front; after taking it, I will start working immediately.</p>
+            <p>Expected delivery - (7-10) days. It may vary depending on my schedules, but I will let you know.</p>
+            <p>I will send you WIP (work in progress) drawing photos to let you know how it is going.</p>
+            <p>You can request changes until I start shading.</p>
+            <p>No refunds once I start to work unless I didn't finish within the deadline that we discussed. There are "No Refunds" once my work is done or finished.</p>
+            <button class="okay-button">Okay</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

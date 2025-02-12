@@ -1,0 +1,240 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: #111;
+}
+
+/* Background with animated gradient waves */
+.background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb);
+    background-size: 400% 400%;
+    animation: gradient-animation 10s ease infinite;
+    z-index: -1;
+}
+
+@keyframes gradient-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Glassmorphism style */
+.glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    padding: 20px;
+}
+
+/* Container */
+.container {
+    display: flex;
+    width: 80%;
+    max-width: 1200px;
+    justify-content: space-between;
+}
+
+/* Columns */
+.column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 30%;
+}
+
+/* Left Column Styling */
+.profile-pic {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 10px solid rgba(255, 255, 255, 0.3);
+    overflow: hidden;
+}
+
+.profile-pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.bio-panel {
+    width: 100%;
+    padding: 20px;
+}
+
+.social-panel {
+    width: 80%;
+    padding: 20px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.chain-frame {
+    height: 10px;
+}
+
+/* Social Icons */
+.social-icons a {
+    margin: 0 10px;
+    font-size: 24px;
+    color: #ff9a9e;
+    text-decoration: none;
+}
+
+.middle-icons {
+  margin: 0 10px;
+  font-size: 54px;
+    color: #ff9a9e;
+    text-decoration: none;
+}
+
+/* Middle Column Styling */
+.middle .info-circles {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    text-align: center;
+}
+
+/* Right Column Styling */
+.accordion {
+    width: 100%;
+}
+
+.accordion-item p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.accordion-content {
+display: none;
+}
+
+.accordion-content.glass {
+    margin-bottom: 10px;
+}
+
+.accordion-btn {
+    width: 100%;
+    padding: 15px;
+    background: #222; /* Darker color */
+    color: white;
+    text-align: left;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.accordion-btn:hover {
+    background: #333;
+}
+
+/* Pricing Styles */
+.price-frame {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 10px;
+    margin-bottom: 10px; /* Added spacing for separation */
+}
+
+/* Carousel Styles */
+.carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel img {
+    width: 300px;
+    height: auto;
+    border-radius: 10px;
+    margin: 0 10px;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark background with transparency */
+}
+
+.modal-content {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent white background */
+    backdrop-filter: blur(15px); /* Blur effect */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Shadow effect */
+    margin: 10% auto; /* Slightly higher margin */
+    padding: 20px;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 20px; /* Rounded corners */
+}
+
+/* Close button */
+.close-button {
+    color: #fff; /* White color for better contrast */
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #ff9a9e; /* Change color on hover for interactivity */
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Okay button styles */
+.okay-button {
+    background-color: rgba(255, 255, 255, 0.2); /* Light background with transparency */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 10px; /* Rounded corners */
+}
+
+.okay-button:hover {
+    background-color: rgba(255, 255, 255, 0.4); /* Slightly brighter on hover */
+}
+
