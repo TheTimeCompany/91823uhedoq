@@ -8,7 +8,7 @@
 }
 
 .video-frame {
-    width: 45%;
+    width: 100%;
     border-radius: 10px;
     transition: transform 0.3s ease-in-out;
 }
@@ -46,4 +46,8 @@
 
 #copy-id:hover {
     cursor: pointer;
+}
+
+#error-message {
+    animation: fadeIn 1s ease-out;
 }
