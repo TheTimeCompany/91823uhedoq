@@ -13,10 +13,14 @@ const videoBtn = document.getElementById("video-btn");
 const copyBtn = document.getElementById("copy-id");
 const errorMessage = document.getElementById("error-message");
 const errorText = document.getElementById("error-text");
+const screenShareBtn = document.getElementById("screen-share-btn");
+const screenShareIcon = document.getElementById("screen-share-icon");
 
 let micMuted = false;
 let videoMuted = false;
 let activePeers = {};  // To keep track of active peer feeds
+let isScreenSharing = false;
+let originalStream = null; // Store the original camera stream
 
 // Get user media
 navigator.mediaDevices.getUserMedia({ video: true, audio: true })
@@ -135,6 +139,49 @@ function toggleVideo() {
     }
     videoMuted = !videoMuted;
 }
+
+// Toggle screen sharing
+async function toggleScreenShare() {
+    if (!isScreenSharing) {
+        try {
+            const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+            const videoTrack = screenStream.getVideoTracks()[0];
+
+            // Replace current video stream with screen stream
+            originalStream = localVideo.srcObject;
+            localVideo.srcObject = screenStream;
+
+            // Notify peers about the new screen stream
+            for (const peerId in activePeers) {
+                const call = peer.call(peerId, screenStream);
+                call.on("stream", remoteStream => addRemoteFeed(remoteStream, peerId));
+            }
+
+            // Handle when the user stops screen sharing
+            videoTrack.onended = () => {
+                toggleScreenShare(); // Stop screen share when closed manually
+            };
+
+            screenShareIcon.classList.remove("text-red-500"); // Turn icon normal
+            isScreenSharing = true;
+        } catch (error) {
+            showError("Screen sharing failed: " + error.message);
+        }
+    } else {
+        // Stop screen sharing and revert to original camera feed
+        localVideo.srcObject = originalStream;
+
+        // Notify peers that we're switching back
+        for (const peerId in activePeers) {
+            const call = peer.call(peerId, originalStream);
+            call.on("stream", remoteStream => addRemoteFeed(remoteStream, peerId));
+        }
+
+        screenShareIcon.classList.add("text-red-500"); // Turn icon red
+        isScreenSharing = false;
+    }
+}
+
 
 // Show error message
 function showError(message) {
