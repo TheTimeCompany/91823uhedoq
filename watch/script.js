@@ -167,47 +167,52 @@ function toggleVideo() {
     videoMuted = !videoMuted;
 }
 
-// Toggle screen sharing
 async function toggleScreenShare() {
     if (!isScreenSharing) {
         try {
             const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
             const videoTrack = screenStream.getVideoTracks()[0];
 
-            // Replace current video stream with screen stream
+            // Store the original stream before replacing
             originalStream = localVideo.srcObject;
             localVideo.srcObject = screenStream;
 
-            // Notify peers about the new screen stream
+            // Replace video track in existing peer connections
             for (const peerId in activePeers) {
-                const call = peer.call(peerId, screenStream);
-                call.on("stream", remoteStream => addRemoteFeed(remoteStream, peerId));
+                const sender = peer.connections[peerId]?.[0]?.peerConnection.getSenders().find(s => s.track.kind === "video");
+                if (sender) {
+                    sender.replaceTrack(videoTrack);
+                }
             }
 
             // Handle when the user stops screen sharing
             videoTrack.onended = () => {
-                toggleScreenShare(); // Stop screen share when closed manually
+                toggleScreenShare(); // Automatically revert back
             };
 
-            screenShareIcon.classList.remove("text-red-500"); // Turn icon normal
+            screenShareIcon.classList.remove("text-red-500");
             isScreenSharing = true;
         } catch (error) {
             showError("Screen sharing failed: " + error.message);
         }
     } else {
-        // Stop screen sharing and revert to original camera feed
+        // Revert back to original camera stream
+        const videoTrack = originalStream.getVideoTracks()[0];
         localVideo.srcObject = originalStream;
 
-        // Notify peers that we're switching back
+        // Replace video track in existing peer connections
         for (const peerId in activePeers) {
-            const call = peer.call(peerId, originalStream);
-            call.on("stream", remoteStream => addRemoteFeed(remoteStream, peerId));
+            const sender = peer.connections[peerId]?.[0]?.peerConnection.getSenders().find(s => s.track.kind === "video");
+            if (sender) {
+                sender.replaceTrack(videoTrack);
+            }
         }
 
-        screenShareIcon.classList.add("text-red-500"); // Turn icon red
+        screenShareIcon.classList.add("text-red-500");
         isScreenSharing = false;
     }
 }
+
 
 
 // Show error message
