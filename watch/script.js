@@ -1,4 +1,4 @@
-const peerServerURL = "http://mux8.com/server.php";  // PHP-based signaling server
+const peerServerURL = "https://mux8.com/server.php";  // PHP-based signaling server
 const peer = new Peer();
 
 // Elements
@@ -41,7 +41,7 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true })
 
 // Add Peer by ID
 function addPeer() {
-    const peerId = peerIdInput.value;
+    const peerId = peerIdInput.value.trim();
     if (!peerId) {
         return showError("Please enter a Peer ID.");
     }
@@ -52,12 +52,16 @@ function addPeer() {
 
     const call = peer.call(peerId, localVideo.srcObject);
     call.on("stream", remoteStream => {
-        const peerId = call.peer;
         if (!activePeers[peerId]) {
             addRemoteFeed(remoteStream, peerId);
         }
     });
+
+    call.on("close", () => {
+        removeRemoteFeed(peerId);
+    });
 }
+
 
 // Save Peer ID to PHP server
 peer.on("open", id => {
@@ -84,15 +88,38 @@ function addRemoteFeed(remoteStream, peerId) {
     arrangeVideoFeeds();
 }
 
-// Remove a remote video feed
+// Remove a remote video feed and update layout
 function removeRemoteFeed(peerId) {
     const videoElement = activePeers[peerId];
     if (videoElement) {
         videoElement.remove();
         delete activePeers[peerId];
+        console.log(`Removed feed for peer: ${peerId}`);
         arrangeVideoFeeds();
     }
 }
+
+// Check for inactive peers every 5 seconds
+async function checkInactivePeers() {
+    try {
+        const response = await fetch(peerServerURL);
+        const activePeerList = await response.json();
+
+        // Compare with currently active peers
+        for (const peerId in activePeers) {
+            if (!activePeerList.includes(peerId)) {
+                removeRemoteFeed(peerId);
+                console.log(`Peer ${peerId} disconnected, removing feed.`);
+            }
+        }
+    } catch (error) {
+        console.error("Error checking inactive peers:", error);
+    }
+}
+
+// Run the inactive peer check every 5 seconds
+setInterval(checkInactivePeers, 5000);
+
 
 // Handle peer disconnections
 peer.on("disconnected", () => {
@@ -193,9 +220,15 @@ function showError(message) {
 // Copy Peer ID to clipboard
 function copyID() {
     const textToCopy = myPeerIdElement.innerText;
+    if (!textToCopy) return showError("No Peer ID available to copy!");
+
     navigator.clipboard.writeText(textToCopy).then(() => {
-        alert("Peer ID copied to clipboard!");
+        copyBtn.innerHTML = '<i class="fas fa-check text-green-500"></i>'; // Success icon
+        setTimeout(() => {
+            copyBtn.innerHTML = '<i class="fas fa-copy"></i>'; // Restore copy icon
+        }, 2000);
     }).catch(err => {
         showError("Error copying Peer ID: " + err);
     });
 }
+
