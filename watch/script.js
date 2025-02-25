@@ -75,16 +75,28 @@ peer.on("open", id => {
     .catch(error => console.error("Error storing Peer ID:", error));
 });
 
-// Add remote video feed
 function addRemoteFeed(remoteStream, peerId) {
+    const videoWrapper = document.createElement("div");
+    videoWrapper.classList.add("video-wrapper");
+
     const newVideo = document.createElement("video");
     newVideo.classList.add("video-frame");
     newVideo.srcObject = remoteStream;
     newVideo.autoplay = true;
-    remoteVideosGrid.appendChild(newVideo);
+
+    // Create fullscreen button
+    const fullscreenBtn = document.createElement("button");
+    fullscreenBtn.classList.add("fullscreen-btn");
+    fullscreenBtn.innerHTML = "⛶"; // Unicode for fullscreen icon
+    fullscreenBtn.onclick = () => enterFullscreen(newVideo, fullscreenBtn);
+
+    // Append elements
+    videoWrapper.appendChild(newVideo);
+    videoWrapper.appendChild(fullscreenBtn);
+    remoteVideosGrid.appendChild(videoWrapper);
 
     // Store the peer's video feed
-    activePeers[peerId] = newVideo;
+    activePeers[peerId] = videoWrapper;
     arrangeVideoFeeds();
 }
 
@@ -138,6 +150,54 @@ function arrangeVideoFeeds() {
     remoteVideosGrid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
     remoteVideosGrid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
 }
+
+function enterFullscreen(video, button) {
+    if (video.requestFullscreen) {
+        video.requestFullscreen();
+    } else if (video.mozRequestFullScreen) { // Firefox
+        video.mozRequestFullScreen();
+    } else if (video.webkitRequestFullscreen) { // Chrome, Safari, Opera
+        video.webkitRequestFullscreen();
+    } else if (video.msRequestFullscreen) { // IE/Edge
+        video.msRequestFullscreen();
+    }
+
+    // Change button to exit fullscreen
+    button.innerHTML = "✖"; // Unicode for exit icon
+    button.onclick = () => exitFullscreen(button);
+}
+
+function exitFullscreen(button) {
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+    }
+
+    // Restore fullscreen button
+    button.innerHTML = "⛶";
+    button.onclick = () => enterFullscreen(button.previousElementSibling, button);
+}
+
+// Handle exit fullscreen event to reset button state
+document.addEventListener("fullscreenchange", resetFullscreenButtons);
+document.addEventListener("webkitfullscreenchange", resetFullscreenButtons);
+document.addEventListener("mozfullscreenchange", resetFullscreenButtons);
+document.addEventListener("MSFullscreenChange", resetFullscreenButtons);
+
+function resetFullscreenButtons() {
+    if (!document.fullscreenElement) {
+        document.querySelectorAll(".fullscreen-btn").forEach(btn => {
+            btn.innerHTML = "⛶";
+            btn.onclick = () => enterFullscreen(btn.previousElementSibling, btn);
+        });
+    }
+}
+
 
 // Toggle mic
 function toggleMic() {
