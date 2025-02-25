@@ -15,6 +15,8 @@ const errorMessage = document.getElementById("error-message");
 const errorText = document.getElementById("error-text");
 const screenShareBtn = document.getElementById("screen-share-btn");
 const screenShareIcon = document.getElementById("screen-share-icon");
+const fullscreenLocalBtn = document.getElementById("fullscreen-local");
+const exitFullscreenLocalBtn = document.getElementById("exit-fullscreen-local");
 
 let micMuted = false;
 let videoMuted = false;
@@ -130,7 +132,7 @@ async function checkInactivePeers() {
 }
 
 // Run the inactive peer check every 5 seconds
-setInterval(checkInactivePeers, 5000);
+//setInterval(checkInactivePeers, 5000);
 
 
 // Handle peer disconnections
@@ -183,6 +185,49 @@ function exitFullscreen(button) {
     button.onclick = () => enterFullscreen(button.previousElementSibling, button);
 }
 
+
+// Enter fullscreen
+fullscreenLocalBtn.addEventListener("click", () => {
+    const video = document.getElementById("local-video");
+
+    if (video.requestFullscreen) {
+        video.requestFullscreen();
+    } else if (video.mozRequestFullScreen) {
+        video.mozRequestFullScreen();
+    } else if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen();
+    } else if (video.msRequestFullscreen) {
+        video.msRequestFullscreen();
+    }
+
+    fullscreenLocalBtn.classList.add("hidden");
+    exitFullscreenLocalBtn.classList.remove("hidden");
+});
+
+// Exit fullscreen
+exitFullscreenLocalBtn.addEventListener("click", () => {
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+    }
+
+    fullscreenLocalBtn.classList.remove("hidden");
+    exitFullscreenLocalBtn.classList.add("hidden");
+});
+
+// Reset fullscreen buttons when fullscreen mode is exited manually
+document.addEventListener("fullscreenchange", () => {
+    if (!document.fullscreenElement) {
+        fullscreenLocalBtn.classList.remove("hidden");
+        exitFullscreenLocalBtn.classList.add("hidden");
+    }
+});
+
 // Handle exit fullscreen event to reset button state
 document.addEventListener("fullscreenchange", resetFullscreenButtons);
 document.addEventListener("webkitfullscreenchange", resetFullscreenButtons);
@@ -199,33 +244,51 @@ function resetFullscreenButtons() {
 }
 
 
-// Toggle mic
 function toggleMic() {
     const stream = localVideo.srcObject;
     const audioTrack = stream.getAudioTracks()[0];
+
+    if (!audioTrack) {
+        return showError("No audio track found!");
+    }
+
     if (micMuted) {
         audioTrack.enabled = true;
         micIcon.classList.remove("text-red-500");
+        micIcon.classList.add("text-green-400");
+        micBtn.classList.remove("disabled");
     } else {
         audioTrack.enabled = false;
+        micIcon.classList.remove("text-green-400");
         micIcon.classList.add("text-red-500");
+        micBtn.classList.add("disabled");
     }
     micMuted = !micMuted;
 }
 
-// Toggle video
+
 function toggleVideo() {
     const stream = localVideo.srcObject;
     const videoTrack = stream.getVideoTracks()[0];
+
+    if (!videoTrack) {
+        return showError("No video track found!");
+    }
+
     if (videoMuted) {
         videoTrack.enabled = true;
         videoIcon.classList.remove("text-red-500");
+        videoIcon.classList.add("text-green-400");
+        videoBtn.classList.remove("disabled");
     } else {
         videoTrack.enabled = false;
+        videoIcon.classList.remove("text-green-400");
         videoIcon.classList.add("text-red-500");
+        videoBtn.classList.add("disabled");
     }
     videoMuted = !videoMuted;
 }
+
 
 async function toggleScreenShare() {
     if (!isScreenSharing) {
