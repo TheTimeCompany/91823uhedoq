@@ -22,18 +22,6 @@ let activePeers = {};  // To keep track of active peer feeds
 let isScreenSharing = false;
 let originalStream = null; // Store the original camera stream
 
-// Function to check if the user is on a mobile device
-function isMobileDevice() {
-    return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-}
-
-// Hide the screen share button if on a mobile device
-window.onload = () => {
-    if (isMobileDevice()) {
-        screenShareBtn.style.display = "none"; // Hide the button
-    }
-};
-
 // Get user media
 navigator.mediaDevices.getUserMedia({ video: true, audio: true })
     .then(stream => {
@@ -248,4 +236,17 @@ function copyID() {
         showError("Error copying Peer ID: " + err);
     });
 }
+
+// Function to check if the user is on a mobile device or has a small screen
+function isMobileDevice() {
+    return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768;
+}
+
+// Remove the screen share button if on a mobile device or small screen
+window.onload = () => {
+    if (isMobileDevice()) {
+        screenShareBtn.parentNode.removeChild(screenShareBtn); // Completely remove the button div
+    }
+};
+
 
