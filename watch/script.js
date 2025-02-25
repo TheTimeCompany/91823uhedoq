@@ -1,4 +1,4 @@
-const peerServerURL = "https://mux8.com/server.php"; // PHP-based signaling server
+const peerServerURL = "http://mux8.com/server.php";  // PHP-based signaling server
 const peer = new Peer();
 
 // Elements
@@ -16,6 +16,7 @@ const errorText = document.getElementById("error-text");
 
 let micMuted = false;
 let videoMuted = false;
+let activePeers = {};  // To keep track of active peer feeds
 
 // Get user media
 navigator.mediaDevices.getUserMedia({ video: true, audio: true })
@@ -25,7 +26,10 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true })
         peer.on("call", call => {
             call.answer(stream);
             call.on("stream", remoteStream => {
-                addRemoteFeed(remoteStream);
+                const peerId = call.peer;
+                if (!activePeers[peerId]) {
+                    addRemoteFeed(remoteStream, peerId);
+                }
             });
         });
     })
@@ -40,7 +44,10 @@ function addPeer() {
 
     const call = peer.call(peerId, localVideo.srcObject);
     call.on("stream", remoteStream => {
-        addRemoteFeed(remoteStream);
+        const peerId = call.peer;
+        if (!activePeers[peerId]) {
+            addRemoteFeed(remoteStream, peerId);
+        }
     });
 }
 
@@ -57,13 +64,44 @@ peer.on("open", id => {
 });
 
 // Add remote video feed
-function addRemoteFeed(remoteStream) {
+function addRemoteFeed(remoteStream, peerId) {
     const newVideo = document.createElement("video");
     newVideo.classList.add("video-frame");
     newVideo.srcObject = remoteStream;
     newVideo.autoplay = true;
     remoteVideosGrid.appendChild(newVideo);
+
+    // Store the peer's video feed
+    activePeers[peerId] = newVideo;
     arrangeVideoFeeds();
+}
+
+// Remove a remote video feed
+function removeRemoteFeed(peerId) {
+    const videoElement = activePeers[peerId];
+    if (videoElement) {
+        videoElement.remove();
+        delete activePeers[peerId];
+        arrangeVideoFeeds();
+    }
+}
+
+// Handle peer disconnections
+peer.on("disconnected", () => {
+    for (let peerId in activePeers) {
+        removeRemoteFeed(peerId);
+    }
+});
+
+// Arrange video feeds dynamically
+function arrangeVideoFeeds() {
+    const videos = remoteVideosGrid.querySelectorAll("video");
+    const totalVideos = videos.length + 1; // Including local video
+    const cols = Math.min(Math.ceil(Math.sqrt(totalVideos)), 3); // Maximum 3 columns
+    const rows = Math.ceil(totalVideos / cols);
+
+    remoteVideosGrid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    remoteVideosGrid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
 }
 
 // Toggle mic
@@ -94,20 +132,17 @@ function toggleVideo() {
     videoMuted = !videoMuted;
 }
 
-// Arrange video feeds dynamically
-function arrangeVideoFeeds() {
-    const videos = remoteVideosGrid.querySelectorAll("video");
-    const totalVideos = videos.length + 1; // Including local video
-    const cols = Math.min(Math.ceil(Math.sqrt(totalVideos)), 3); // Maximum 3 columns
-    const rows = Math.ceil(totalVideos / cols);
-
-    remoteVideosGrid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-    remoteVideosGrid.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
-}
-
 // Show error message
 function showError(message) {
     errorText.innerText = message;
     errorMessage.classList.remove("hidden");
     setTimeout(() => errorMessage.classList.add("hidden"), 5000);
+}
+
+// Copy Peer ID to clipboard
+function copyID() {
+    const textToCopy = myPeerIdElement.innerText;
+    navigator.clipboard.writeText(textToCopy).then(() => {
+        alert("Peer ID copied to clipboard!");
+    });
 }
