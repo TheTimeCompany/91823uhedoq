@@ -42,6 +42,10 @@ function addPeer() {
         return showError("Please enter a Peer ID.");
     }
 
+    if (activePeers[peerId]) {
+        return showError("This Peer ID is already added.");
+    }
+
     const call = peer.call(peerId, localVideo.srcObject);
     call.on("stream", remoteStream => {
         const peerId = call.peer;
@@ -144,5 +148,7 @@ function copyID() {
     const textToCopy = myPeerIdElement.innerText;
     navigator.clipboard.writeText(textToCopy).then(() => {
         alert("Peer ID copied to clipboard!");
+    }).catch(err => {
+        showError("Error copying Peer ID: " + err);
     });
 }
