@@ -38,3 +38,18 @@
     margin-top: 8px;
     font-size: 1rem;
 }
+
+.control-btn {
+    background: transparent;
+    padding: 10px;
+    border-radius: 50%;
+    transition: transform 0.2s ease-in-out;
+}
+
+.control-btn:hover {
+    transform: scale(1.1);
+}
+
+.text-red-500 {
+    color: red;
+}
