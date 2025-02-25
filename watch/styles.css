@@ -17,20 +17,6 @@
     transform: scale(1.05);
 }
 
-.call-btn {
-    background: linear-gradient(90deg, #3b82f6, #1e40af);
-    color: white;
-    font-weight: bold;
-    padding: 12px 20px;
-    border-radius: 8px;
-    transition: all 0.3s ease-in-out;
-}
-
-.call-btn:hover {
-    background: linear-gradient(90deg, #2563eb, #1e3a8a);
-    transform: scale(1.05);
-}
-
 .control-btn {
     background-color: transparent;
     border: none;
@@ -44,10 +30,11 @@
     color: #3b82f6;
 }
 
-#copy-id:hover {
-    cursor: pointer;
-}
-
 #error-message {
     animation: fadeIn 1s ease-out;
+}
+
+#copy-id {
+    margin-top: 8px;
+    font-size: 1rem;
 }
