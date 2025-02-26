@@ -1,4 +1,5 @@
-const peerServerURL = "https://mux8.com/server.php";  // PHP-based signaling server
+const peerServerURL = "https://muxwow.onrender.com";  // Signaling server
+const socket = io(signalingServerURL);
 const peer = new Peer();
 
 // Elements
@@ -65,17 +66,56 @@ function addPeer() {
 }
 
 
-// Save Peer ID to PHP server
 peer.on("open", id => {
     myPeerIdElement.innerText = id;
-    fetch(peerServerURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: "peerId=" + encodeURIComponent(id)
-    })
-    .then(response => response.json())
-    .catch(error => console.error("Error storing Peer ID:", error));
+    // Register the peerId with the signaling server via WebSocket
+    socket.emit("register", id);
 });
+
+// When receiving an offer from another peer, handle it
+socket.on("offer", (data) => {
+    const { offer, peerId } = data;
+    const call = peer.call(peerId, localVideo.srcObject);
+    call.on("stream", remoteStream => {
+        if (!activePeers[peerId]) {
+            addRemoteFeed(remoteStream, peerId);
+        }
+    });
+
+    call.on("close", () => {
+        removeRemoteFeed(peerId);
+    });
+});
+
+// When receiving an answer from another peer, handle it
+socket.on("answer", (data) => {
+    const { answer, peerId } = data;
+    peer.connections[peerId][0].peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
+});
+
+// When receiving an ICE candidate from another peer, handle it
+socket.on("candidate", (data) => {
+    const { candidate, peerId } = data;
+    const connection = peer.connections[peerId]?.[0]?.peerConnection;
+    if (connection) {
+        connection.addIceCandidate(new RTCIceCandidate(candidate));
+    }
+});
+
+// Handle sending an offer (for example, when you want to initiate a call)
+function sendOffer(peerId, offer) {
+    socket.emit("offer", { peerId, offer });
+}
+
+// Handle sending an answer (for example, when you answer a call)
+function sendAnswer(peerId, answer) {
+    socket.emit("answer", { peerId, answer });
+}
+
+// Handle sending ICE candidates (for example, during WebRTC setup)
+function sendCandidate(peerId, candidate) {
+    socket.emit("candidate", { peerId, candidate });
+}
 
 function addRemoteFeed(remoteStream, peerId) {
     const videoWrapper = document.createElement("div");
