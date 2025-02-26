@@ -1,5 +1,5 @@
 const peerServerURL = "https://muxwow.onrender.com";  // Signaling server
-const socket = io(signalingServerURL);
+const socket = io(peerServerURL);
 const peer = new Peer();
 
 // Elements
