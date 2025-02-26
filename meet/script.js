@@ -1,4 +1,4 @@
-const peerServerURL = "https://muxwow.onrender.com";  // Signaling server
+const peerServerURL = "https://bracu.ac.bd/";  // Signaling server
 const socket = io(peerServerURL);
 const peer = new Peer();
 
